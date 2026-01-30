@@ -1,7 +1,9 @@
-import { Wallet } from '@app/types'
-import { Controller, Get, Inject, Param, Post } from '@nestjs/common'
+import { ChargeWalletDto, TransactionType, Wallet } from '@app/types'
+import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { firstValueFrom } from 'rxjs'
+import { VerifiedUserId } from '../decorators/verified-user-id.decorator'
+import { UserExistsGuard } from '../guards/user-exists.guard'
 
 @Controller('wallets')
 export class WalletsController {
@@ -9,4 +11,22 @@ export class WalletsController {
 		@Inject('WALLETS_SERVICE')
 		private readonly walletsClient: ClientProxy,
 	) {}
+
+	@Post('charge')
+	@UseGuards(UserExistsGuard)
+	async chargeWallet(
+		@Body() dto: ChargeWalletDto,
+		@VerifiedUserId() userId: string,
+	): Promise<Wallet> {
+		return await firstValueFrom(
+			this.walletsClient.send<Wallet>(
+				{ cmd: 'charge' },
+				{
+					userId,
+					amount: dto.amount,
+					type: TransactionType.CHARGE,
+				},
+			),
+		)
+	}
 }

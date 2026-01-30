@@ -9,6 +9,7 @@
 		"dev": "npm run build -- --watch",
 		"generate:php": "node scripts/generate-php-types.js"
 	},
-	"dependencies": {},
-	"devDependencies": {}
+	"devDependencies": {
+		"@types/node": "^25.1.0"
+	}
 }

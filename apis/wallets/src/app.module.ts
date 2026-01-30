@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { dataSourceOptions } from './data-source'
 import { Transaction, Wallet } from './entities'
+import { TransactionRepository } from './transaction.repository'
+import { WalletRepository } from './wallet.repository'
 import { WalletsService } from './wallets.service'
 import { WalletsMicroserviceController } from './wallets-microservice.controller'
 
@@ -13,6 +15,6 @@ import { WalletsMicroserviceController } from './wallets-microservice.controller
 		TypeOrmModule.forFeature([Wallet, Transaction]),
 	],
 	controllers: [WalletsMicroserviceController],
-	providers: [WalletsService],
+	providers: [WalletsService, WalletRepository, TransactionRepository],
 })
 export class AppModule {}

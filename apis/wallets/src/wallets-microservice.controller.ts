@@ -1,6 +1,7 @@
-import { Wallet } from '@app/types'
+import { Transaction, Wallet } from '@app/types'
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
+import { CreateTransactionDto, CreateWalletDto } from './dto'
 import { WalletsService } from './wallets.service'
 
 @Controller()
@@ -9,24 +10,12 @@ export class WalletsMicroserviceController {
 
 	@MessagePattern({ cmd: 'create_wallet' })
 	async createWallet(userId: string): Promise<Wallet> {
-		return this.walletsService.createWallet(userId)
+		const createWalletDto: CreateWalletDto = { userId }
+		return this.walletsService.createWallet(createWalletDto)
 	}
 
-	@MessagePattern({ cmd: 'get_wallet' })
-	async getWallet(userId: string): Promise<Wallet> {
-		return this.walletsService.findWalletById(userId)
-	}
-
-	@MessagePattern({ cmd: 'get_balance' })
-	async getBalance(userId: string): Promise<number> {
-		return this.walletsService.getBalance(userId)
-	}
-
-	@MessagePattern({ cmd: 'update_balance' })
-	async updateBalance(data: {
-		userId: string
-		amount: number
-	}): Promise<Wallet> {
-		return this.walletsService.updateBalance(data.userId, data.amount)
+	@MessagePattern({ cmd: 'charge' })
+	async charge(dto: CreateTransactionDto): Promise<Wallet> {
+		return this.walletsService.charge(dto.userId, dto.amount)
 	}
 }

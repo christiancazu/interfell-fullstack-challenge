@@ -1,6 +1,6 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import { ConfigService } from '@app/shared'
+import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import * as dotenv from 'dotenv'
@@ -26,6 +26,30 @@ async function bootstrap() {
 				port: Number.parseInt(process.env.MS_WALLETS_PORT || '5002', 10),
 			},
 		},
+	)
+
+	app.useGlobalPipes(
+		new ValidationPipe({
+			whitelist: true,
+			forbidNonWhitelisted: true,
+			transform: true,
+			exceptionFactory: (errors) => {
+				const formattedErrors = errors.reduce(
+					(acc, error) => {
+						acc[error.property] = Object.values(error.constraints || {})
+						return acc
+					},
+					{} as Record<string, string[]>,
+				)
+
+				// Lanzar un error con el formato que espera el gateway
+				return {
+					statusCode: 422,
+					message: 'Validation failed',
+					errors: formattedErrors,
+				}
+			},
+		}),
 	)
 
 	await app.listen()

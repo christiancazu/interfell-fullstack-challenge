@@ -1,42 +1,33 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
-import { Wallet } from './entities'
+import { Injectable } from '@nestjs/common'
+import { CreateWalletDto, UpdateBalanceDto } from './dto'
+import { Transaction, Wallet } from './entities'
+import { TransactionRepository } from './transaction.repository'
+import { WalletRepository } from './wallet.repository'
 
 @Injectable()
 export class WalletsService {
 	constructor(
-		@InjectRepository(Wallet)
-		private readonly walletRepository: Repository<Wallet>,
+		private readonly walletRepository: WalletRepository,
+		private readonly transactionRepository: TransactionRepository,
 	) {}
 
-	async createWallet(userId: string): Promise<Wallet> {
-		const wallet = this.walletRepository.create({
-			userId,
-		})
-		return this.walletRepository.save(wallet)
+	async createWallet(createWalletDto: CreateWalletDto): Promise<Wallet> {
+		return this.walletRepository.create(createWalletDto)
 	}
 
 	async findWalletById(userId: string): Promise<Wallet> {
-		const wallet = await this.walletRepository.findOne({
-			where: { userId },
-		})
-
-		if (!wallet) {
-			throw new NotFoundException(`Wallet with userId ${userId} not found`)
-		}
-
-		return wallet
+		return this.walletRepository.findByUserIdOrFail(userId)
 	}
 
 	async getBalance(userId: string): Promise<number> {
-		const wallet = await this.findWalletById(userId)
-		return wallet.balance
+		return this.walletRepository.getBalance(userId)
 	}
 
-	async updateBalance(userId: string, amount: number): Promise<Wallet> {
-		const wallet = await this.findWalletById(userId)
-		wallet.balance += amount
-		return this.walletRepository.save(wallet)
+	async updateBalance(updateBalanceDto: UpdateBalanceDto): Promise<Wallet> {
+		return this.walletRepository.updateBalance(updateBalanceDto)
+	}
+
+	async charge(userId: string, amount: number): Promise<Wallet> {
+		return this.transactionRepository.charge(userId, amount)
 	}
 }
