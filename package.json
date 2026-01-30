@@ -24,6 +24,11 @@
 	"pnpm": {
 		"overrides": {
 			"@types/node": "^25.1.0"
-		}
+		},
+		"onlyBuiltDependencies": [
+			"@nestjs/core",
+			"@swc/core",
+			"esbuild"
+		]
 	}
 }

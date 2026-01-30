@@ -4,7 +4,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 
 // Configuración
-const DIST_DIR = path.join(__dirname, '../dist')
+const USERS_FILE = path.join(__dirname, '../dist/domain/users.d.ts')
 const OUTPUT_DIR = path.join(__dirname, '../../../apis/users/app/Types')
 const NAMESPACE = 'App\\Types'
 
@@ -365,25 +365,12 @@ function main() {
 
 	fs.mkdirSync(OUTPUT_DIR, { recursive: true })
 
-	// Procesar archivos en dist/
-	const domainDir = path.join(DIST_DIR, 'domain')
-
-	if (fs.existsSync(domainDir)) {
-		const files = fs.readdirSync(domainDir)
-
-		files.forEach((file) => {
-			if (file.endsWith('.d.ts')) {
-				const filePath = path.join(domainDir, file)
-				const domain = path.basename(file, '.d.ts')
-				processTypeDefinitionFile(filePath, domain)
-			}
-		})
-	}
-
-	// Procesar archivo principal si existe
-	const mainFile = path.join(DIST_DIR, 'index.d.ts')
-	if (fs.existsSync(mainFile)) {
-		processTypeDefinitionFile(mainFile)
+	// Procesar solo el archivo users.d.ts
+	if (fs.existsSync(USERS_FILE)) {
+		processTypeDefinitionFile(USERS_FILE, 'users')
+	} else {
+		console.error(`❌ File not found: ${USERS_FILE}`)
+		process.exit(1)
 	}
 
 	// Crear archivo .gitkeep para mantener la estructura
