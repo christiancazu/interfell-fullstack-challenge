@@ -1,0 +1,8 @@
+{
+	"name": "@app/users",
+	"version": "1.0.0",
+	"description": "Users API for Wallet project",
+	"scripts": {
+		"dev": "composer run dev"
+	}
+}

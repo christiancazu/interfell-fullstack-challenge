@@ -1,0 +1,5 @@
+/src/**/*.ts
+!/src/index.ts
+
+# Build output
+/dist
