@@ -5,11 +5,10 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"build": "tsc",
-		"dev": "npm run build -- --watch"
+		"build": "tsc && npm run generate:php",
+		"dev": "npm run build -- --watch",
+		"generate:php": "node scripts/generate-php-types.js"
 	},
-	"dependencies": {
-	},
-	"devDependencies": {
-	}
+	"dependencies": {},
+	"devDependencies": {}
 }
