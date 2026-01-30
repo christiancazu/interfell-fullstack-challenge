@@ -30,5 +30,8 @@
 			"@swc/core",
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"@types/dotenv": "^8.2.3"
 	}
 }

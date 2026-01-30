@@ -2,6 +2,7 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { ConfigService } from '@app/shared'
 import { NestFactory } from '@nestjs/core'
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import * as dotenv from 'dotenv'
 import { AppModule } from './app.module'
 
@@ -16,13 +17,20 @@ if (fs.existsSync(envPath)) {
 }
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule)
+	const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+		AppModule,
+		{
+			transport: Transport.TCP,
+			options: {
+				host: '0.0.0.0',
+				port: Number.parseInt(process.env.MS_WALLETS_PORT || '5002', 10),
+			},
+		},
+	)
 
-	const configService = app.get(ConfigService)
-	const port = configService.get<number>('MS_WALLETS_PORT') ?? 5002
-
-	await app.listen(port, () => {
-		console.log(port, `Wallets service running on port ${port}`)
-	})
+	await app.listen()
+	console.log(
+		`Wallets TCP microservice listening on port ${process.env.MS_WALLETS_PORT || '5002'}`,
+	)
 }
 bootstrap()
