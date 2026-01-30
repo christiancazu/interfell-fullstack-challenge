@@ -19,8 +19,8 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->string("name", $config_fields['NAME_MAX_LENGTH']);
             $table->string("document", $config_fields['DOCUMENT_MAX_LENGTH'])->unique();
-            $table->string("email", $config_fields['EMAIL_MAX_LENGTH'])->unique();
-            $table->string("cellphone", $config_fields['CELLPHONE_MAX_LENGTH'])->unique();
+            $table->string("email", $config_fields['EMAIL_MAX_LENGTH']);
+            $table->string("cellphone", $config_fields['CELLPHONE_MAX_LENGTH']);
             $table->timestamps();
         });
     }

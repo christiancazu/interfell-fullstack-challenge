@@ -1,11 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return response()->json([
-        'message' => 'Hello World',
-        'app' => 'Users API',
-        'version' => '1.0.0'
-    ]);
+Route::prefix('users')->controller(UserController::class)->group(function () {
+    Route::post('/', 'create');
+    Route::post('/verify', 'verify');
 });

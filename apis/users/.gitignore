@@ -22,3 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Auto-generated types from TypeScript
+/app/Types
+!/app/Types/.gitkeep
