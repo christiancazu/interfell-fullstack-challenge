@@ -1,5 +1,6 @@
 import { TransactionStatus, TransactionType } from '@app/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { RpcException } from '@nestjs/microservices'
 import { InjectRepository } from '@nestjs/typeorm'
 import { DataSource, Repository } from 'typeorm'
 import { Transaction, Wallet } from './entities'
@@ -44,6 +45,56 @@ export class TransactionRepository {
 
 			// 5. Retornar wallet actualizado
 			return wallet
+		})
+	}
+
+	private generateOTP(): string {
+		return Math.floor(100000 + Math.random() * 900000).toString()
+	}
+
+	async requestPayment(
+		userId: string,
+		amount: number,
+	): Promise<{ transactionId: string; otp: string }> {
+		return await this.dataSource.transaction(async (manager) => {
+			// 1. Buscar wallet
+			const wallet = await manager.findOne(Wallet, {
+				where: { userId },
+			})
+
+			if (!wallet) {
+				throw new RpcException({
+					statusCode: 404,
+					message: `Wallet with userId ${userId} not found`,
+				})
+			}
+
+			// 2. Verificar que tenga saldo suficiente
+			if (Number(wallet.balance) < amount) {
+				throw new RpcException({
+					statusCode: 400,
+					message: `Insufficient balance. Current balance: ${wallet.balance}, requested: ${amount}`,
+				})
+			}
+
+			// 3. Generar OTP
+			const otp = this.generateOTP()
+
+			// 4. Crear transacción con status PENDING
+			const transaction = manager.create(Transaction, {
+				wallet,
+				type: TransactionType.REQUEST_PAYMENT,
+				amount,
+				status: TransactionStatus.PENDING,
+				otp,
+			})
+			const savedTransaction = await manager.save(transaction)
+
+			// 5. Retornar id y otp
+			return {
+				transactionId: savedTransaction.id,
+				otp,
+			}
 		})
 	}
 }

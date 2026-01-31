@@ -19,7 +19,7 @@ export class InitialMigration1738262400000 implements MigrationInterface {
 		await queryRunner.query(`
             CREATE TABLE IF NOT EXISTS transactions (
                 id varchar(36) NOT NULL,
-                type enum('charge', 'payment') NOT NULL,
+                type enum('charge', 'request_payment', 'send_payment') NOT NULL,
                 amount decimal(10,2) NOT NULL,
                 status enum('pending', 'completed', 'failed') NOT NULL DEFAULT 'pending',
                 created_at datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),

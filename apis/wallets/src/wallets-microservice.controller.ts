@@ -18,4 +18,11 @@ export class WalletsMicroserviceController {
 	async charge(dto: CreateTransactionDto): Promise<Wallet> {
 		return this.walletsService.charge(dto.userId, dto.amount)
 	}
+
+	@MessagePattern({ cmd: 'request_payment' })
+	async requestPayment(
+		dto: CreateTransactionDto,
+	): Promise<{ transactionId: string; otp: string }> {
+		return this.walletsService.requestPayment(dto.userId, dto.amount)
+	}
 }

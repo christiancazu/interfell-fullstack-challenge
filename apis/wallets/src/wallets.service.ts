@@ -30,4 +30,11 @@ export class WalletsService {
 	async charge(userId: string, amount: number): Promise<Wallet> {
 		return this.transactionRepository.charge(userId, amount)
 	}
+
+	async requestPayment(
+		userId: string,
+		amount: number,
+	): Promise<{ transactionId: string; otp: string }> {
+		return this.transactionRepository.requestPayment(userId, amount)
+	}
 }

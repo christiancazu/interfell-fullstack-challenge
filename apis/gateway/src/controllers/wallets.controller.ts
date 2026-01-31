@@ -29,4 +29,22 @@ export class WalletsController {
 			),
 		)
 	}
+
+	@Post('request-payment')
+	@UseGuards(UserExistsGuard)
+	async requestPayment(
+		@Body() dto: ChargeWalletDto,
+		@VerifiedUserId() userId: string,
+	): Promise<{ transactionId: string; otp: string }> {
+		return await firstValueFrom(
+			this.walletsClient.send<{ transactionId: string; otp: string }>(
+				{ cmd: 'request_payment' },
+				{
+					userId,
+					amount: dto.amount,
+					type: TransactionType.REQUEST_PAYMENT,
+				},
+			),
+		)
+	}
 }
