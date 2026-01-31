@@ -1,21 +1,24 @@
-import { UpdateType } from '@app/types'
+import {
+	Wallet as IWallet,
+	WalletRepository as IWalletRepository,
+	UpdateType,
+} from '@app/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { CreateWalletDto, UpdateBalanceDto } from './dto'
-import { Wallet } from './entities'
+import { CreateWalletDto, UpdateBalanceDto } from '../dto'
+import { Wallet } from '../entities'
 
 @Injectable()
-export class WalletRepository {
+export class WalletRepository implements IWalletRepository {
 	constructor(
 		@InjectRepository(Wallet)
 		private readonly repository: Repository<Wallet>,
 	) {}
 
-	async create(createWalletDto: CreateWalletDto): Promise<Wallet> {
+	async create(createWalletDto: CreateWalletDto): Promise<IWallet> {
 		const wallet = this.repository.create({
 			userId: createWalletDto.userId,
-			balance: 0,
 		})
 		return this.repository.save(wallet)
 	}
@@ -36,7 +39,7 @@ export class WalletRepository {
 		return wallet
 	}
 
-	async updateBalance(updateBalanceDto: UpdateBalanceDto): Promise<Wallet> {
+	async updateBalance(updateBalanceDto: UpdateBalanceDto): Promise<IWallet> {
 		const wallet = await this.findByUserIdOrFail(updateBalanceDto.userId)
 		const amount = Number(updateBalanceDto.amount)
 

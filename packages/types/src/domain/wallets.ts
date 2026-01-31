@@ -28,16 +28,19 @@ export interface Transaction {
 	finalizedAt?: string | null
 }
 
+export interface CreateWalletDto {
+	userId: string
+}
+
 export interface ChargeWalletDto {
 	document: string
 	cellphone: string
 	amount: number
 }
 
-export interface TransactionsRepository {
-	charge(dto: ChargeWalletDto): Promise<Wallet>
-	requestPayment(): Promise<Wallet>
-	sendPayment(): Promise<Wallet>
+export interface ConfirmPaymentDto {
+	transactionId: string
+	otp: string
 }
 
 export enum UpdateType {
@@ -51,6 +54,19 @@ export interface UpdateBalanceDto {
 	updateType: UpdateType
 }
 
+export interface CreateTransactionDto {
+	userId: string
+	amount: number
+	type: TransactionType
+}
+
 export interface WalletRepository {
+	create(dto: CreateWalletDto): Promise<Wallet>
 	updateBalance(dto: UpdateBalanceDto): Promise<Wallet>
+}
+
+export interface TransactionRepository {
+	charge(dto: ChargeWalletDto): Promise<Wallet>
+	requestPayment(): Promise<Wallet>
+	confirmPayment(dto: ConfirmPaymentDto): Promise<Wallet>
 }

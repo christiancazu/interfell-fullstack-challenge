@@ -1,4 +1,9 @@
-import { ChargeWalletDto, TransactionType, Wallet } from '@app/types'
+import {
+	ChargeWalletDto,
+	ConfirmPaymentDto,
+	TransactionType,
+	Wallet,
+} from '@app/types'
 import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { firstValueFrom } from 'rxjs'
@@ -45,6 +50,16 @@ export class WalletsController {
 					type: TransactionType.REQUEST_PAYMENT,
 				},
 			),
+		)
+	}
+
+	@Post('confirm-payment')
+	async confirmPayment(
+		@Body()
+		dto: ConfirmPaymentDto,
+	): Promise<Wallet> {
+		return await firstValueFrom(
+			this.walletsClient.send<Wallet>({ cmd: 'confirm_payment' }, dto),
 		)
 	}
 }

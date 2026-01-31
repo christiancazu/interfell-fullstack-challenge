@@ -1,26 +1,15 @@
-import * as fs from 'node:fs'
-import * as path from 'node:path'
 import * as dotenv from 'dotenv'
 import * as mysql from 'mysql2/promise'
+import { getEnvPath } from '../config/env.config'
 
-// Load .env (production), fallback to .env.local (development symlink)
-const envPath = path.join(__dirname, '../../.env')
-const envLocalPath = path.join(__dirname, '../../.env.local')
-
-if (fs.existsSync(envPath)) {
-	dotenv.config({ path: envPath })
-	console.log('✓ Loaded .env')
-} else if (fs.existsSync(envLocalPath)) {
-	dotenv.config({ path: envLocalPath })
-	console.log('✓ Loaded .env.local (symlink)')
-} else {
-	console.warn('⚠ No .env or .env.local found, using defaults')
-}
+// Cargar variables de entorno usando la configuración centralizada
+const envPath = getEnvPath()
+dotenv.config({ path: envPath })
 
 async function createDatabaseIfNotExists() {
 	const connection = await mysql.createConnection({
 		host: process.env.DB_HOST || 'localhost',
-		port: Number.parseInt(process.env.DB_PORT || '3306'),
+		port: Number.parseInt(process.env.DB_PORT || '3306', 10),
 		user: process.env.DB_USERNAME || 'root',
 		password: process.env.DB_PASSWORD || '',
 	})

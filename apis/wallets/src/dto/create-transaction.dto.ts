@@ -1,7 +1,10 @@
-import { TransactionType } from '@app/types'
+import {
+	CreateTransactionDto as ICreateTransactionDto,
+	TransactionType,
+} from '@app/types'
 import { IsEnum, IsNumber, IsUUID } from 'class-validator'
 
-export class CreateTransactionDto {
+export class CreateTransactionDto implements ICreateTransactionDto {
 	@IsUUID()
 	userId!: string
 
