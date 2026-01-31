@@ -36,4 +36,10 @@ export class AppController {
 	async confirmPayment(dto: ConfirmPaymentDto): Promise<Wallet> {
 		return this.transactionRepository.confirmPayment(dto)
 	}
+
+	@MessagePattern({ cmd: 'get_balance' })
+	async getBalance(userId: string): Promise<Wallet> {
+		console.warn(userId)
+		return this.walletRepository.getBalance(userId)
+	}
 }

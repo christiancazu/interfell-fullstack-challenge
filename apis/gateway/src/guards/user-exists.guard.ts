@@ -8,7 +8,7 @@ export class UserExistsGuard implements CanActivate {
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest()
-		const { document, cellphone } = request.body
+		const { document, cellphone } = request.body ?? {}
 
 		const response = await firstValueFrom(
 			this.httpService.post('/verify', { document, cellphone }),

@@ -33,7 +33,7 @@ export class WalletRepository implements IWalletRepository {
 		const wallet = await this.findByUserId(userId)
 
 		if (!wallet) {
-			throw new NotFoundException(`Wallet with userId ${userId} not found`)
+			throw new NotFoundException('La Billetera no ha sido registrada')
 		}
 
 		return wallet
@@ -52,9 +52,8 @@ export class WalletRepository implements IWalletRepository {
 		return this.repository.save(wallet)
 	}
 
-	async getBalance(userId: string): Promise<number> {
-		const wallet = await this.findByUserIdOrFail(userId)
-		return wallet.balance
+	async getBalance(userId: string): Promise<IWallet> {
+		return this.findByUserIdOrFail(userId)
 	}
 
 	async save(wallet: Wallet): Promise<Wallet> {

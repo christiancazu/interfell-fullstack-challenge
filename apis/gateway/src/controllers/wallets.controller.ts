@@ -62,4 +62,13 @@ export class WalletsController {
 			this.walletsClient.send<Wallet>({ cmd: 'confirm_payment' }, dto),
 		)
 	}
+
+	@Post('get-balance')
+	@UseGuards(UserExistsGuard)
+	async getBalance(@VerifiedUserId() userId: string): Promise<Wallet> {
+		console.warn(userId)
+		return await firstValueFrom(
+			this.walletsClient.send<Wallet>({ cmd: 'get_balance' }, userId),
+		)
+	}
 }

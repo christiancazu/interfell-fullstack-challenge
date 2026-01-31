@@ -63,6 +63,7 @@ export interface CreateTransactionDto {
 export interface WalletRepository {
 	create(dto: CreateWalletDto): Promise<Wallet>
 	updateBalance(dto: UpdateBalanceDto): Promise<Wallet>
+	getBalance(userId: string): Promise<Wallet>
 }
 
 export interface TransactionRepository {
