@@ -27,6 +27,22 @@ import { httpServiceProvider } from './providers/http-service.provider'
 				}),
 			},
 		]),
+		ClientsModule.registerAsync([
+			{
+				name: 'NOTIFICATIONS_SERVICE',
+				inject: [ConfigService],
+				useFactory: (configService: ConfigService) => ({
+					transport: Transport.TCP,
+					options: {
+						host: configService.get('MS_NOTIFICATIONS_HOST') || 'localhost',
+						port: Number.parseInt(
+							configService.get('MS_NOTIFICATIONS_PORT') || '5003',
+							10,
+						),
+					},
+				}),
+			},
+		]),
 	],
 	controllers: [UsersController, WalletsController],
 	providers: [httpServiceProvider],

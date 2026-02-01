@@ -5,7 +5,7 @@ import { SharedService } from './shared.service'
 @Module({
 	imports: [
 		ConfigModule.forRoot({
-			envFilePath: ['.env', '.env.local'],
+			envFilePath: ['.env.local', '.env'],
 			isGlobal: true,
 		}),
 	],

@@ -14,7 +14,7 @@ export class UserExistsGuard implements CanActivate {
 			this.httpService.post('/verify', { document, cellphone }),
 		)
 
-		request.verifiedUserId = response.data.id
+		request.user = response.data
 
 		return true
 	}

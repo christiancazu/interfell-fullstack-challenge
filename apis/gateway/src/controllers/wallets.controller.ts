@@ -2,12 +2,13 @@ import {
 	ChargeWalletDto,
 	ConfirmPaymentDto,
 	TransactionType,
+	User,
 	Wallet,
 } from '@app/types'
 import { Body, Controller, Inject, Post, UseGuards } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 import { firstValueFrom } from 'rxjs'
-import { VerifiedUserId } from '../decorators/verified-user-id.decorator'
+import { VerifiedUser } from '../decorators/verified-user.decorator'
 import { UserExistsGuard } from '../guards/user-exists.guard'
 
 @Controller('wallets')
@@ -15,19 +16,22 @@ export class WalletsController {
 	constructor(
 		@Inject('WALLETS_SERVICE')
 		private readonly walletsClient: ClientProxy,
+
+		@Inject('NOTIFICATIONS_SERVICE')
+		private readonly notificationsClient: ClientProxy,
 	) {}
 
 	@Post('charge')
 	@UseGuards(UserExistsGuard)
 	async chargeWallet(
 		@Body() dto: ChargeWalletDto,
-		@VerifiedUserId() userId: string,
+		@VerifiedUser() user: User,
 	): Promise<Wallet> {
 		return await firstValueFrom(
 			this.walletsClient.send<Wallet>(
 				{ cmd: 'charge' },
 				{
-					userId,
+					userId: user.id,
 					amount: dto.amount,
 					type: TransactionType.CHARGE,
 				},
@@ -39,18 +43,29 @@ export class WalletsController {
 	@UseGuards(UserExistsGuard)
 	async requestPayment(
 		@Body() dto: ChargeWalletDto,
-		@VerifiedUserId() userId: string,
-	): Promise<{ transactionId: string; otp: string }> {
-		return await firstValueFrom(
+		@VerifiedUser() user: User,
+	): Promise<ConfirmPaymentDto> {
+		const transaction = await firstValueFrom(
 			this.walletsClient.send<{ transactionId: string; otp: string }>(
 				{ cmd: 'request_payment' },
 				{
-					userId,
+					userId: user.id,
 					amount: dto.amount,
 					type: TransactionType.REQUEST_PAYMENT,
 				},
 			),
 		)
+		await firstValueFrom(
+			this.notificationsClient.send<{ success: boolean }>(
+				{ cmd: 'send_otp_email' },
+				{
+					user,
+					transaction,
+				},
+			),
+		)
+
+		return transaction
 	}
 
 	@Post('confirm-payment')
@@ -65,10 +80,9 @@ export class WalletsController {
 
 	@Post('get-balance')
 	@UseGuards(UserExistsGuard)
-	async getBalance(@VerifiedUserId() userId: string): Promise<Wallet> {
-		console.warn(userId)
+	async getBalance(@VerifiedUser() user: User): Promise<Wallet> {
 		return await firstValueFrom(
-			this.walletsClient.send<Wallet>({ cmd: 'get_balance' }, userId),
+			this.walletsClient.send<Wallet>({ cmd: 'get_balance' }, user.id),
 		)
 	}
 }

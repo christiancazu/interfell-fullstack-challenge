@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common'
-import { AppService } from './app.service'
+import { User } from '@app/types'
+import { Controller } from '@nestjs/common'
+import { MessagePattern } from '@nestjs/microservices'
+import { SendOtpEmailDto } from './dto/send-otp-email.dto'
+import { EmailService } from './services/email.service'
 
 @Controller()
 export class AppController {
-	constructor(private readonly appService: AppService) {}
+	constructor(private readonly emailService: EmailService) {}
 
-	@Get()
-	getHello(): string {
-		return this.appService.getHello()
+	@MessagePattern({ cmd: 'send_otp_email' })
+	async sendOtpEmail(dto: SendOtpEmailDto): Promise<{ success: boolean }> {
+		await this.emailService.sendOtpEmail(dto.user as User, dto.transaction)
+		return { success: true }
 	}
 }
