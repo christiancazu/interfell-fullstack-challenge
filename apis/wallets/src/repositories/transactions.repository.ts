@@ -1,6 +1,7 @@
 import {
 	ChargeWalletDto,
 	ConfirmPaymentDto,
+	CreateTransactionDto,
 	TransactionRepository as ITransactionRepository,
 	Wallet as IWallet,
 	TransactionStatus,
@@ -55,33 +56,25 @@ export class TransactionRepository implements ITransactionRepository {
 		return Math.floor(100000 + Math.random() * 900000).toString()
 	}
 
-	async requestPayment(): Promise<IWallet> {
-		// TODO: Implementar lógica de requestPayment según sea necesario
-		throw new Error('Method not implemented')
-	}
-
-	async _requestPaymentInternal(
-		userId: string,
-		amount: number,
-	): Promise<{ transactionId: string; otp: string }> {
+	async requestPayment(dto: CreateTransactionDto): Promise<ConfirmPaymentDto> {
 		return await this.dataSource.transaction(async (manager) => {
 			// 1. Buscar wallet
 			const wallet = await manager.findOne(Wallet, {
-				where: { userId },
+				where: { userId: dto.userId },
 			})
 
 			if (!wallet) {
 				throw new RpcException({
 					statusCode: 404,
-					message: `Billetera ${userId} no encontrada`,
+					message: `Billetera ${dto.userId} no encontrada`,
 				})
 			}
 
 			// 2. Verificar que tenga saldo suficiente
-			if (Number(wallet.balance) < amount) {
+			if (Number(wallet.balance) < dto.amount) {
 				throw new RpcException({
 					statusCode: 400,
-					message: `Saldo insuficiente: actual: ${wallet.balance}, solicitado: ${amount}`,
+					message: `Saldo insuficiente: actual: ${wallet.balance}, solicitado: ${dto.amount}`,
 				})
 			}
 
@@ -92,7 +85,7 @@ export class TransactionRepository implements ITransactionRepository {
 			const transaction = manager.create(Transaction, {
 				wallet,
 				type: TransactionType.REQUEST_PAYMENT,
-				amount,
+				amount: dto.amount,
 				status: TransactionStatus.PENDING,
 				otp,
 			})

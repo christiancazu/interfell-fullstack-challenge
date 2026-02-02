@@ -48,7 +48,11 @@ export function DashboardLayout() {
 							className={styles.closeButton}
 							aria-label="Cerrar menú"
 						>
-							<svg className={styles.closeIcon} fill="currentColor" viewBox="0 0 20 20">
+							<svg
+								className={styles.closeIcon}
+								fill="currentColor"
+								viewBox="0 0 20 20"
+							>
 								<title>Close</title>
 								<path
 									fillRule="evenodd"
@@ -81,8 +85,8 @@ export function DashboardLayout() {
 						Balance
 					</Link>
 					<Link
-						to="/send-payment"
-						className={`${styles.navLink} ${isActive('/send-payment') ? styles.navLinkActive : ''}`}
+						to="/confirm-payment"
+						className={`${styles.navLink} ${isActive('/confirm-payment') ? styles.navLinkActive : ''}`}
 						onClick={closeSidebar}
 					>
 						<svg
@@ -130,7 +134,11 @@ export function DashboardLayout() {
 							className={styles.menuButton}
 							aria-label="Abrir menú"
 						>
-							<svg className={styles.menuIcon} fill="currentColor" viewBox="0 0 20 20">
+							<svg
+								className={styles.menuIcon}
+								fill="currentColor"
+								viewBox="0 0 20 20"
+							>
 								<title>Menu</title>
 								<path
 									fillRule="evenodd"

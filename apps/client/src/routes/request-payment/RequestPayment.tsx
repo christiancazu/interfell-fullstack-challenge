@@ -155,6 +155,7 @@ export function RequestPayment() {
 							</div>
 							<Link
 								to="/confirm-payment"
+								search={{ transactionId: state.data.transactionId }}
 								className={`${styles.button} ${styles.buttonConfirm}`}
 							>
 								Confirmar Pago

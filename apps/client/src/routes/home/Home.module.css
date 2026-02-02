@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 .container {
-  @apply flex items-center justify-center p-4 mt-12;
+  @apply flex items-center justify-center p-4;
 }
 
 .card {

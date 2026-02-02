@@ -1,6 +1,5 @@
 import config from '@app/shared/config.json'
 import type { CreateUserDto } from '@app/types'
-import { Link } from '@tanstack/react-router'
 import axios from 'axios'
 import { useActionState, useEffect, useState } from 'react'
 import { BackButton } from '../../components/back-button/BackButton'
@@ -178,12 +177,6 @@ export function Register() {
 						>
 							{isPending ? 'Creando cuenta...' : 'Crear cuenta'}
 						</button>
-						<Link
-							to="/"
-							className={`${styles.button} ${styles.buttonSecondary}`}
-						>
-							<span>Cancelar</span>
-						</Link>
 					</div>
 				</form>
 			</div>

@@ -73,6 +73,6 @@ export interface WalletRepository {
 
 export interface TransactionRepository {
 	charge(dto: ChargeWalletDto): Promise<Wallet>
-	requestPayment(): Promise<Wallet>
+	requestPayment(dto: CreateTransactionDto): Promise<ConfirmPaymentDto>
 	confirmPayment(dto: ConfirmPaymentDto): Promise<Wallet>
 }

@@ -46,7 +46,7 @@ export class EmailService {
 	): string {
 		const confirmPaymentUrl =
 			this.configService.get<string>('VITE_CONFIRM_PAYMENT_URL') || '#'
-		console.error({ confirmPaymentUrl })
+
 		return `
 			<!DOCTYPE html>
 			<html lang="es">

@@ -6,10 +6,10 @@ import {
 } from '@tanstack/react-router'
 import { AppLayout } from './layouts/AppLayout'
 import { Balance } from './routes/balance/Balance'
+import { ConfirmPayment } from './routes/confirm-payment/ConfirmPayment'
 import { Home } from './routes/home/Home'
 import { Register } from './routes/register/Register'
 import { RequestPayment } from './routes/request-payment/RequestPayment'
-import { SendPayment } from './routes/SendPayment'
 
 const rootRoute = createRootRoute({
 	component: () => <Outlet />,
@@ -41,8 +41,8 @@ const balanceRoute = createRoute({
 
 const sendPaymentRoute = createRoute({
 	getParentRoute: () => layoutRoute,
-	path: '/send-payment',
-	component: SendPayment,
+	path: '/confirm-payment',
+	component: ConfirmPayment,
 })
 
 const requestPaymentRoute = createRoute({

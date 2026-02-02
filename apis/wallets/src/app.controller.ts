@@ -1,4 +1,4 @@
-import { ChargeWalletDto, Wallet } from '@app/types'
+import { ChargeWalletDto, CreateTransactionDto, Wallet } from '@app/types'
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
 import { CreateWalletDto } from './dto'
@@ -25,11 +25,8 @@ export class AppController {
 	}
 
 	@MessagePattern({ cmd: 'request_payment' })
-	async requestPayment(dto: ChargeWalletDto): Promise<ConfirmPaymentDto> {
-		return this.transactionRepository._requestPaymentInternal(
-			dto.document,
-			dto.amount,
-		)
+	async requestPayment(dto: CreateTransactionDto): Promise<ConfirmPaymentDto> {
+		return this.transactionRepository.requestPayment(dto)
 	}
 
 	@MessagePattern({ cmd: 'confirm_payment' })
@@ -39,7 +36,6 @@ export class AppController {
 
 	@MessagePattern({ cmd: 'get_balance' })
 	async getBalance(userId: string): Promise<Wallet> {
-		console.warn(userId)
 		return this.walletRepository.getBalance(userId)
 	}
 }

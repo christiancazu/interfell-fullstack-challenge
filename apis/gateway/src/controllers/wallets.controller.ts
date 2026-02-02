@@ -46,12 +46,11 @@ export class WalletsController {
 		@VerifiedUser() user: User,
 	): Promise<ConfirmPaymentDto> {
 		const transaction = await firstValueFrom(
-			this.walletsClient.send<{ transactionId: string; otp: string }>(
+			this.walletsClient.send<ConfirmPaymentDto>(
 				{ cmd: 'request_payment' },
 				{
 					userId: user.id,
 					amount: dto.amount,
-					type: TransactionType.REQUEST_PAYMENT,
 				},
 			),
 		)
@@ -80,14 +79,16 @@ export class WalletsController {
 
 	@Post('get-balance')
 	@UseGuards(UserExistsGuard)
-	async getBalance(@VerifiedUser() user: User): Promise<Wallet & { user: User }> {
-		const wallet =  await firstValueFrom(
+	async getBalance(
+		@VerifiedUser() user: User,
+	): Promise<Wallet & { user: User }> {
+		const wallet = await firstValueFrom(
 			this.walletsClient.send<Wallet>({ cmd: 'get_balance' }, user.id),
 		)
 
 		return {
 			...wallet,
-			user
+			user,
 		}
 	}
 }
