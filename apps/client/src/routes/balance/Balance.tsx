@@ -19,7 +19,7 @@ interface FormState {
 }
 
 async function verifyAndGetBalance(
-	prevState: FormState | null,
+	_prevState: FormState | null,
 	formData: FormData,
 ): Promise<FormState> {
 	try {
@@ -65,7 +65,7 @@ export function Balance() {
 		document: '',
 		cellphone: '',
 	})
-	const [formKey, setFormKey] = useState(0)
+	const [_formKey, setFormKey] = useState(0)
 
 	useEffect(() => {
 		if (state?.success) {

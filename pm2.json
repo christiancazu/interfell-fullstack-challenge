@@ -1,0 +1,39 @@
+{
+	"apps": [
+		{
+			"name": "gateway",
+			"script": "pnpm",
+			"args": "gateway dev",
+			"cwd": "./",
+			"interpreter": "none"
+		},
+		{
+			"name": "wallets",
+			"script": "pnpm",
+			"args": "wallets dev",
+			"cwd": "./",
+			"interpreter": "none"
+		},
+		{
+			"name": "notifications",
+			"script": "pnpm",
+			"args": "notifications dev",
+			"cwd": "./",
+			"interpreter": "none"
+		},
+		{
+			"name": "users",
+			"script": "pnpm",
+			"args": "users dev",
+			"cwd": "./",
+			"interpreter": "none"
+		},
+		{
+			"name": "client",
+			"script": "pnpm",
+			"args": "client preview --host",
+			"cwd": "./",
+			"interpreter": "none"
+		}
+	]
+}

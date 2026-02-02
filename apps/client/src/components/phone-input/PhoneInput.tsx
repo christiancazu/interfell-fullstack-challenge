@@ -29,7 +29,7 @@ export function PhoneInput({
 	name = 'cellphone',
 	id = 'cellphone',
 }: PhoneInputProps) {
-	const [detectedCountryCode, setDetectedCountryCode] = useState('')
+	const [_detectedCountryCode, setDetectedCountryCode] = useState('')
 	const [selectedCode, setSelectedCode] = useState('')
 	const [searchTerm, setSearchTerm] = useState('')
 	const [isOpen, setIsOpen] = useState(false)

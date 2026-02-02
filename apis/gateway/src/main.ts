@@ -23,8 +23,11 @@ async function bootstrap() {
 	app.setGlobalPrefix('api')
 
 	const isDevelopment = process.env.NODE_ENV !== 'production'
+
+	const allowedOrigins = [process.env.VITE_APP_URL].filter(Boolean)
+
 	app.enableCors({
-		origin: isDevelopment ? '*' : false,
+		origin: isDevelopment ? '*' : allowedOrigins,
 		credentials: true,
 	})
 
