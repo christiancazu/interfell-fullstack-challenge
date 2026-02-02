@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "Users API for Wallet project",
 	"scripts": {
+		"install": "composer install",
 		"dev": "composer run dev",
 		"migration:run": "php artisan migrate --force"
 	}
