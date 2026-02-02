@@ -9,14 +9,24 @@ export class EmailService {
 	private transporter: Transporter
 
 	constructor(private readonly configService: ConfigService) {
+		const smtpHost =
+			this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com'
+		const smtpUser = this.configService.get<string>('SMTP_USER')
+		const smtpPassword = this.configService.get<string>('SMTP_PASSWORD')
+
+		console.log({ smtpUser })
+
 		this.transporter = nodemailer.createTransport({
-			host: this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com',
-			port: this.configService.get<number>('SMTP_PORT') || 587,
-			secure: false,
+			host: smtpHost,
 			auth: {
-				user: this.configService.get<string>('SMTP_USER'),
-				pass: this.configService.get<string>('SMTP_PASSWORD'),
+				user: smtpUser,
+				pass: smtpPassword,
 			},
+			connectionTimeout: 10000,
+			greetingTimeout: 10000,
+			socketTimeout: 10000,
+			logger: true,
+			debug: true,
 		})
 	}
 
