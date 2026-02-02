@@ -50,10 +50,12 @@ export class WalletsController {
 				{ cmd: 'request_payment' },
 				{
 					userId: user.id,
-					amount: dto.amount,
+					amount: Number(dto.amount),
+					type: TransactionType.REQUEST_PAYMENT,
 				},
 			),
 		)
+
 		await firstValueFrom(
 			this.notificationsClient.send<{ success: boolean }>(
 				{ cmd: 'send_otp_email' },

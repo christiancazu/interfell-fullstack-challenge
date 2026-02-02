@@ -42,7 +42,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 		}
 
 		// Si es un error 500 o superior, usar mensaje genérico
-		if (status >= 500) {
+		// Pero mantener el formato original si tiene errors (para errores de validación)
+		if (status >= 500 && typeof errorResponse === 'string') {
 			errorResponse = 'El servicio no esta disponible en este momento'
 		}
 

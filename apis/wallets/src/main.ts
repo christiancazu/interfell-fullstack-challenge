@@ -1,7 +1,11 @@
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
-import { MicroserviceOptions, Transport } from '@nestjs/microservices'
+import {
+	MicroserviceOptions,
+	RpcException,
+	Transport,
+} from '@nestjs/microservices'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -35,12 +39,12 @@ async function bootstrap() {
 					{} as Record<string, string[]>,
 				)
 
-				// Lanzar un error con el formato que espera el gateway
-				return {
+				// Lanzar RpcException con el formato que espera el gateway
+				return new RpcException({
 					statusCode: 422,
 					message: 'Validation failed',
 					errors: formattedErrors,
-				}
+				})
 			},
 		}),
 	)
