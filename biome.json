@@ -7,7 +7,8 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**", "!!**/dist", "!!**/build", "!!**/node_modules"]
+		"includes": ["**", "!!**/dist", "!!**/build", "!!**/node_modules"],
+		"ignore": ["**/*.module.css", "**/*.css"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -47,6 +48,15 @@
 			"security": {
 				"noDangerouslySetInnerHtml": "warn"
 			}
+		}
+	},
+	"css": {
+		"parser": {
+			"cssModules": true,
+			"allowWrongLineComments": true
+		},
+		"linter": {
+			"enabled": false
 		}
 	},
 	"javascript": {

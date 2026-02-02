@@ -1,0 +1,123 @@
+@import "tailwindcss/theme" reference;
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.container {
+  @apply min-h-screen bg-gray-50 transition-colors;
+}
+
+:global(.dark) .container {
+  @apply bg-gray-900;
+}
+
+.headerContainer {
+  @apply flex items-center gap-3;
+}
+
+.sidebarHeaderContent {
+  @apply flex justify-between items-center;
+}
+
+.logoIcon {
+  @apply w-6 h-6 md:w-8 md:h-8;
+}
+
+.closeButton {
+  @apply p-2 rounded-lg hover:bg-gray-100 md:hidden;
+}
+
+:global(.dark) .closeButton {
+  @apply hover:bg-gray-700;
+}
+
+.closeIcon {
+  @apply w-5 h-5;
+}
+
+.sidebar {
+  @apply fixed left-0 top-0 h-full w-full bg-white border-r border-gray-200 shadow-lg transition-colors z-50 md:w-64;
+}
+
+:global(.dark) .sidebar {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.sidebarHeader {
+  @apply p-4 border-b border-gray-200 md:p-6;
+}
+
+:global(.dark) .sidebarHeader {
+  @apply border-gray-700;
+}
+
+.sidebarTitle {
+  @apply text-xl font-bold text-gray-900 flex items-center gap-2 md:text-2xl;
+}
+
+:global(.dark) .sidebarTitle {
+  @apply text-white;
+}
+
+.sidebarNav {
+  @apply p-3 flex flex-col gap-2 md:p-4;
+}
+
+.navLink {
+  @apply flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-colors md:gap-3 md:px-4 md:py-3 md:text-base;
+}
+
+:global(.dark) .navLink {
+  @apply text-gray-300 hover:bg-gray-700;
+}
+
+.navLinkActive {
+  @apply bg-blue-50 text-blue-600 font-medium;
+}
+
+:global(.dark) .navLinkActive {
+  @apply bg-blue-900/30 text-blue-400;
+}
+
+.navIcon {
+  @apply w-4 h-4 md:w-5 md:h-5;
+}
+
+.main {
+  @apply min-h-screen pt-16 md:ml-64 md:pt-0;
+}
+
+.header {
+  @apply fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-4 py-3 flex justify-between items-center transition-colors z-40 md:static md:px-8 md:py-4;
+}
+
+:global(.dark) .header {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.headerTitle {
+  @apply text-lg font-bold text-gray-900 md:text-2xl;
+}
+
+:global(.dark) .headerTitle {
+  @apply text-white;
+}
+
+.content {
+  @apply p-4 md:p-8;
+}
+
+.menuButton {
+  @apply p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors md:hidden;
+}
+
+:global(.dark) .menuButton {
+  @apply text-gray-300 hover:bg-gray-700;
+}
+
+.menuIcon {
+  @apply w-6 h-6;
+}
+
+.overlay {
+  @apply fixed inset-0 bg-black/50 z-40 md:hidden;
+}

@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
 		plugins: [react(), tailwindcss()],
 		envDir: '../../',
 		server: {
-			port: Number(env.VITE_APP_PORT) || 6000,
+			port: Number(env.VITE_APP_PORT) || 5173,
 		},
 	}
 })

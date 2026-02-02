@@ -1,0 +1,35 @@
+@import "tailwindcss/theme" reference;
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.layout {
+  @apply min-h-screen bg-gray-50;
+}
+
+:global(.dark) .layout {
+  @apply bg-gray-900;
+}
+
+.header {
+  @apply bg-white border-b border-gray-200 sticky top-0 z-10;
+}
+
+:global(.dark) .header {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.headerContent {
+  @apply max-w-7xl mx-auto px-4 py-4 flex items-center justify-between md:px-6;
+}
+
+.logo {
+  @apply text-lg font-bold text-gray-900 md:text-xl;
+}
+
+:global(.dark) .logo {
+  @apply text-white;
+}
+
+.main {
+  @apply w-full;
+}
