@@ -1,9 +1,9 @@
 import config from '@app/shared/config.json'
 import type { CheckUserDto } from '@app/types'
-import { Link } from '@tanstack/react-router'
 import axios from 'axios'
 import { useActionState, useEffect, useState } from 'react'
-import { PhoneInput } from '../../components/PhoneInput/PhoneInput'
+import { BackButton } from '../../components/back-button/BackButton'
+import { PhoneInput } from '../../components/phone-input/PhoneInput'
 import httpClient from '../../config/httpClient.config'
 import styles from './Balance.module.css'
 
@@ -94,23 +94,7 @@ export function Balance() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.card}>
-				<Link to="/" className={styles.backButton}>
-					<svg
-						className={styles.backIcon}
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<title>Volver</title>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M10 19l-7-7m0 0l7-7m-7 7h18"
-						/>
-					</svg>
-					Volver
-				</Link>
+				<BackButton />
 
 				<h1 className={styles.title}>Consultar Saldo</h1>
 

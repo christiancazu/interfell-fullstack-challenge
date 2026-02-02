@@ -7,14 +7,7 @@ const countryCodes = customList('countryCode' as any, '+{countryCallingCode}')
 const countryNames = customList('countryCode' as any, '{countryNameEn}')
 
 async function getCountryByIP(): Promise<string> {
-	try {
-		const response = await fetch('https://ipapi.co/json/')
-		const data = await response.json()
-		const countryCode = data.country_code
-		return countryCodes[countryCode] || ''
-	} catch {
-		return ''
-	}
+	return ''
 }
 
 interface PhoneInputProps {
@@ -107,6 +100,7 @@ export function PhoneInput({
 							placeholder="Buscar país..."
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
+							// biome-ignore lint/a11y/noAutofocus: <explanation>
 							autoFocus
 						/>
 						<div className={styles.countryCodeList}>

@@ -1,0 +1,15 @@
+@import "tailwindcss/theme" reference;
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.backButton {
+	@apply flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-4 transition-colors md:text-base;
+}
+
+:global(.dark) .backButton {
+	@apply text-gray-400 hover:text-gray-200;
+}
+
+.backIcon {
+	@apply w-5 h-5;
+}

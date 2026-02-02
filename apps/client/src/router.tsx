@@ -5,10 +5,10 @@ import {
 	Outlet,
 } from '@tanstack/react-router'
 import { AppLayout } from './layouts/AppLayout'
+import { Balance } from './routes/balance/Balance'
 import { Home } from './routes/home/Home'
 import { Register } from './routes/register/Register'
-import { Balance } from './routes/balance/Balance'
-import { RequestPayment } from './routes/RequestPayment'
+import { RequestPayment } from './routes/request-payment/RequestPayment'
 import { SendPayment } from './routes/SendPayment'
 
 const rootRoute = createRootRoute({
