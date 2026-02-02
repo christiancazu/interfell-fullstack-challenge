@@ -224,7 +224,7 @@ POST   /api/users/verify       # Verificar usuario
 **Tipos de Transacciones:**
 ```typescript
 enum TransactionType {
-  CHARGE = 'charge'              // Recibir dinero
+  CHARGE = 'charge'                      // Recargar billetera
   REQUEST_PAYMENT = 'request_payment'    // Solicitar pago (genera OTP)
   CONFIRM_PAYMENT = 'confirm_payment'    // Confirmar con OTP
 }
@@ -435,7 +435,17 @@ Client → Gateway
          └─ Retornar usuario creado
 ```
 
-### 2. Solicitar Pago
+### 2. Recargar Billetera
+```
+Client → Gateway (Verificar usuario)
+       → Wallets (TCP 5002)
+         ├─ Buscar o crear billetera
+         ├─ Crear transacción tipo "charge"
+         ├─ Actualizar balance (suma monto)
+         └─ Retornar nueva transacción
+```
+
+### 3. Solicitar Pago
 ```
 Client → Gateway (Verificar usuario)
        → Wallets (TCP 5002)
@@ -448,7 +458,7 @@ Client → Gateway (Verificar usuario)
        → Retornar transactionId al cliente
 ```
 
-### 3. Confirmar Pago
+### 4. Confirmar Pago
 ```
 Client → Gateway
        → Wallets (TCP 5002)
@@ -479,6 +489,7 @@ cambiar las variables necesarias, por ejemplo para conectar a la base de datos q
 
 #### **Wallets**
 - `POST /wallets/get-balance` - Consultar saldo
+- `POST /wallets/charge` - Recargar billetera
 - `POST /wallets/request-payment` - Solicitar pago (genera OTP)
 - `POST /wallets/confirm-payment` - Confirmar pago con OTP
 
@@ -557,6 +568,7 @@ apps/client/
 │   │   ├── index.tsx        # Página principal
 │   │   ├── register/        # Registro de usuario
 │   │   ├── balance/         # Consultar saldo
+│   │   ├── charge/          # Recargar billetera
 │   │   ├── request-payment/ # Solicitar pago
 │   │   └── confirm-payment/ # Confirmar pago con OTP
 │   ├── components/          # Componentes reutilizables
@@ -581,6 +593,7 @@ VITE_API_URL=http://localhost:5000
 - `/` - Página principal
 - `/register` - Registro de usuarios
 - `/balance` - Consultar saldo de billetera
+- `/charge` - Recargar billetera
 - `/request-payment` - Solicitar pago (genera OTP)
 - `/confirm-payment` - Confirmar pago con OTP
 

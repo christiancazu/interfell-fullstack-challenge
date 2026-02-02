@@ -33,7 +33,6 @@ export class WalletsController {
 				{
 					userId: user.id,
 					amount: dto.amount,
-					type: TransactionType.CHARGE,
 				},
 			),
 		)

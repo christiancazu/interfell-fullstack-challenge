@@ -9,6 +9,7 @@ import {
 } from '@app/types'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { RpcException } from '@nestjs/microservices'
+import { UpdateBalanceDto } from 'src/dto'
 import { DataSource } from 'typeorm'
 import { Transaction, Wallet } from '../entities'
 
@@ -16,8 +17,8 @@ import { Transaction, Wallet } from '../entities'
 export class TransactionRepository implements ITransactionRepository {
 	constructor(private readonly dataSource: DataSource) {}
 
-	async charge(dto: ChargeWalletDto): Promise<IWallet> {
-		const { document: userId, amount } = dto
+	async charge(dto: UpdateBalanceDto): Promise<IWallet> {
+		const { userId, amount } = dto
 		return await this.dataSource.transaction(async (manager) => {
 			// 1. Buscar wallet con lock para evitar race conditions
 			const wallet = await manager.findOne(Wallet, {

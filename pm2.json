@@ -3,21 +3,21 @@
 		{
 			"name": "gateway",
 			"script": "pnpm",
-			"args": "gateway dev",
+			"args": "gateway start:prod",
 			"cwd": "./",
 			"interpreter": "none"
 		},
 		{
 			"name": "wallets",
 			"script": "pnpm",
-			"args": "wallets dev",
+			"args": "wallets start:prod",
 			"cwd": "./",
 			"interpreter": "none"
 		},
 		{
 			"name": "notifications",
 			"script": "pnpm",
-			"args": "notifications dev",
+			"args": "notifications start:prod",
 			"cwd": "./",
 			"interpreter": "none"
 		},

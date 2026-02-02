@@ -55,6 +55,29 @@ export function Home() {
 						</div>
 					</Link>
 
+					<Link to="/charge" className={styles.menuItem}>
+						<div className={styles.iconWrapper}>
+							<svg
+								className={styles.icon}
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<title>Recargar</title>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+								/>
+							</svg>
+						</div>
+						<div className={styles.menuContent}>
+							<h2 className={styles.menuTitle}>Recargar</h2>
+							<p className={styles.menuDescription}>Añade fondos</p>
+						</div>
+					</Link>
+
 					<Link to="/request-payment" className={styles.menuItem}>
 						<div className={styles.iconWrapper}>
 							<svg

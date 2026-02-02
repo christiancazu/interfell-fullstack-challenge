@@ -56,7 +56,7 @@ export enum UpdateType {
 export interface UpdateBalanceDto {
 	userId: string
 	amount: number
-	updateType: UpdateType
+	updateType?: UpdateType
 }
 
 export interface CreateTransactionDto {
@@ -72,7 +72,7 @@ export interface WalletRepository {
 }
 
 export interface TransactionRepository {
-	charge(dto: ChargeWalletDto): Promise<Wallet>
+	charge(dto: UpdateBalanceDto): Promise<Wallet>
 	requestPayment(dto: CreateTransactionDto): Promise<ConfirmPaymentDto>
 	confirmPayment(dto: ConfirmPaymentDto): Promise<Wallet>
 }

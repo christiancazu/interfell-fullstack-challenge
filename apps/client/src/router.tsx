@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-router'
 import { AppLayout } from './layouts/AppLayout'
 import { Balance } from './routes/balance/Balance'
+import { Charge } from './routes/charge/Charge'
 import { ConfirmPayment } from './routes/confirm-payment/ConfirmPayment'
 import { Home } from './routes/home/Home'
 import { Register } from './routes/register/Register'
@@ -25,6 +26,12 @@ const indexRoute = createRoute({
 	getParentRoute: () => layoutRoute,
 	path: '/',
 	component: Home,
+})
+
+const chargeRoute = createRoute({
+	getParentRoute: () => layoutRoute,
+	path: '/charge',
+	component: Charge,
 })
 
 const registerRoute = createRoute({
@@ -55,6 +62,7 @@ const routeTree = rootRoute.addChildren([
 	layoutRoute.addChildren([
 		indexRoute,
 		registerRoute,
+		chargeRoute,
 		balanceRoute,
 		sendPaymentRoute,
 		requestPaymentRoute,

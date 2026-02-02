@@ -1,7 +1,7 @@
 import { ChargeWalletDto, TransactionType, Wallet } from '@app/types'
 import { Controller } from '@nestjs/common'
 import { MessagePattern } from '@nestjs/microservices'
-import { CreateTransactionDto, CreateWalletDto } from './dto'
+import { CreateTransactionDto, CreateWalletDto, UpdateBalanceDto } from './dto'
 import { ConfirmPaymentDto } from './dto/confirm-payment'
 import { TransactionRepository } from './repositories/transactions.repository'
 import { WalletRepository } from './repositories/wallets.repository'
@@ -20,7 +20,7 @@ export class AppController {
 	}
 
 	@MessagePattern({ cmd: 'charge' })
-	async charge(dto: ChargeWalletDto): Promise<Wallet> {
+	async charge(dto: UpdateBalanceDto): Promise<Wallet> {
 		return this.transactionRepository.charge(dto)
 	}
 
