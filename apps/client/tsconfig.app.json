@@ -22,7 +22,14 @@
 		"noUnusedParameters": true,
 		"erasableSyntaxOnly": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedSideEffectImports": true
+		"noUncheckedSideEffectImports": true,
+		"resolveJsonModule": true,
+		
+		/* Path Mapping */
+		"baseUrl": ".",
+		"paths": {
+			"@app/*": ["../../packages/*"]
+		}
 	},
 	"include": ["src"]
 }

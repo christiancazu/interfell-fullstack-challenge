@@ -20,7 +20,14 @@ if (fs.existsSync(envPath)) {
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
 
-	// Apply global exception filter
+	app.setGlobalPrefix('api')
+
+	const isDevelopment = process.env.NODE_ENV !== 'production'
+	app.enableCors({
+		origin: isDevelopment ? '*' : false,
+		credentials: true,
+	})
+
 	app.useGlobalFilters(new GlobalExceptionFilter())
 
 	// Apply global response transformer

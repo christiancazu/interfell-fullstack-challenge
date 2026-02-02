@@ -5,8 +5,8 @@ import {
 	Outlet,
 } from '@tanstack/react-router'
 import { AppLayout } from './layouts/AppLayout'
-import { Home } from './routes/Home'
-import { Register } from './routes/Register'
+import { Home } from './routes/home/Home'
+import { Register } from './routes/register/Register'
 import { Balance } from './routes/Balance'
 import { RequestPayment } from './routes/RequestPayment'
 import { SendPayment } from './routes/SendPayment'
