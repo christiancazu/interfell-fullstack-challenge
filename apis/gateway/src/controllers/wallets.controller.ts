@@ -80,9 +80,14 @@ export class WalletsController {
 
 	@Post('get-balance')
 	@UseGuards(UserExistsGuard)
-	async getBalance(@VerifiedUser() user: User): Promise<Wallet> {
-		return await firstValueFrom(
+	async getBalance(@VerifiedUser() user: User): Promise<Wallet & { user: User }> {
+		const wallet =  await firstValueFrom(
 			this.walletsClient.send<Wallet>({ cmd: 'get_balance' }, user.id),
 		)
+
+		return {
+			...wallet,
+			user
+		}
 	}
 }

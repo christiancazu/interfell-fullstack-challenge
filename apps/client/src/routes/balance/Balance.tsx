@@ -1,68 +1,79 @@
 import config from '@app/shared/config.json'
-import type { CreateUserDto } from '@app/types'
+import type { CheckUserDto } from '@app/types'
 import { Link } from '@tanstack/react-router'
 import axios from 'axios'
 import { useActionState, useEffect, useState } from 'react'
 import { PhoneInput } from '../../components/PhoneInput/PhoneInput'
 import httpClient from '../../config/httpClient.config'
-import styles from './Register.module.css'
+import styles from './Balance.module.css'
 
 const { FIELDS } = config
 
 interface FormState {
 	error?: string
 	success?: boolean
-	data?: any
+	data?: {
+		balance: string
+		userName: string
+	}
 }
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-async function registerUser(
-	_prevState: FormState | null,
+async function verifyAndGetBalance(
+	prevState: FormState | null,
 	formData: FormData,
 ): Promise<FormState> {
 	try {
 		const countryCode = formData.get('countryCode') as string
 		const cellphone = formData.get('cellphone') as string
 
-		const response = await httpClient.post<CreateUserDto>('users', {
+		const response = await httpClient.post<{
+			data: {
+				balance: string
+				user: {
+					name: string
+				}
+			}
+		}>('wallets/get-balance', {
 			document: formData.get('document') as string,
-			name: formData.get('name') as string,
-			email: formData.get('email') as string,
 			cellphone: `${countryCode}${cellphone}`,
 		})
 
-		return { success: true, data: response.data }
+		return {
+			success: true,
+			data: {
+				balance: response.data.data.balance,
+				userName: response.data.data.user.name,
+			},
+		}
 	} catch (error) {
 		if (axios.isAxiosError(error)) {
 			return {
-				error: error.response?.data?.message || 'Error al registrar usuario',
+				error:
+					error.response?.data?.error?.message || 'Error al verificar usuario',
 			}
 		}
-		return { error: 'Error inesperado al registrar usuario' }
+		return { error: 'Error inesperado al verificar usuario' }
 	}
 }
 
-export function Register() {
+export function Balance() {
 	const [state, formAction, isPending] = useActionState<
 		FormState | null,
 		FormData
-	>(registerUser, null)
-	const [formData, setFormData] = useState<CreateUserDto>({
+	>(verifyAndGetBalance, null)
+	const [formData, setFormData] = useState<CheckUserDto>({
 		document: '',
-		name: '',
-		email: '',
 		cellphone: '',
 	})
+	const [formKey, setFormKey] = useState(0)
 
 	useEffect(() => {
 		if (state?.success) {
 			setFormData({
 				document: '',
-				name: '',
-				email: '',
 				cellphone: '',
 			})
+			setFormKey((prev) => prev + 1)
 		}
 	}, [state?.success])
 
@@ -77,11 +88,6 @@ export function Register() {
 	const isFormValid =
 		formData.document.length > 0 &&
 		formData.document.length <= FIELDS.DOCUMENT_MAX_LENGTH &&
-		formData.name.length > 0 &&
-		formData.name.length <= FIELDS.NAME_MAX_LENGTH &&
-		formData.email.length > 0 &&
-		formData.email.length <= FIELDS.EMAIL_MAX_LENGTH &&
-		emailRegex.test(formData.email) &&
 		formData.cellphone.length > 0 &&
 		formData.cellphone.length <= FIELDS.CELLPHONE_MAX_LENGTH
 
@@ -106,15 +112,19 @@ export function Register() {
 					Volver
 				</Link>
 
-				<h1 className={styles.title}>Registrar Usuario</h1>
+				<h1 className={styles.title}>Consultar Saldo</h1>
 
 				{state?.error && (
 					<div className={styles.errorMessage}>{state.error}</div>
 				)}
 
-				{state?.success && (
+				{state?.success && state.data && (
 					<div className={styles.successMessage}>
-						Usuario registrado exitosamente
+						<div className={styles.balanceResult}>
+							<div className={styles.userName}>Hola, {state.data.userName}</div>
+							<div className={styles.balanceLabel}>Tu saldo disponible es:</div>
+							<div className={styles.balanceAmount}>{state.data.balance}</div>
+						</div>
 					</div>
 				)}
 
@@ -138,44 +148,7 @@ export function Register() {
 					</div>
 
 					<div className={styles.formGroup}>
-						<label htmlFor="name" className={styles.label}>
-							Nombre completo
-						</label>
-						<input
-							id="name"
-							name="name"
-							type="text"
-							value={formData.name}
-							onChange={handleChange}
-							maxLength={FIELDS.NAME_MAX_LENGTH}
-							className={styles.input}
-							placeholder="Juan Pérez"
-							required
-							disabled={isPending}
-						/>
-					</div>
-
-					<div className={styles.formGroup}>
-						<label htmlFor="email" className={styles.label}>
-							Correo electrónico
-						</label>
-						<input
-							id="email"
-							name="email"
-							type="email"
-							value={formData.email}
-							onChange={handleChange}
-							maxLength={FIELDS.EMAIL_MAX_LENGTH}
-							autoComplete="off"
-							className={styles.input}
-							placeholder="juan@ejemplo.com"
-							required
-							disabled={isPending}
-						/>
-					</div>
-
-					<div className={styles.formGroup}>
-						<label htmlFor="phone" className={styles.label}>
+						<label htmlFor="cellphone" className={styles.label}>
 							Teléfono
 						</label>
 						<PhoneInput
@@ -191,14 +164,8 @@ export function Register() {
 							className={`${styles.button} ${styles.buttonPrimary}`}
 							disabled={isPending || !isFormValid}
 						>
-							{isPending ? 'Creando cuenta...' : 'Crear cuenta'}
+							{isPending ? 'Consultando...' : 'Consultar Saldo'}
 						</button>
-						<Link
-							to="/"
-							className={`${styles.button} ${styles.buttonSecondary}`}
-						>
-							<span>Cancelar</span>
-						</Link>
 					</div>
 				</form>
 			</div>

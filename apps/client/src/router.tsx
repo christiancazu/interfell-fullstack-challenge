@@ -7,7 +7,7 @@ import {
 import { AppLayout } from './layouts/AppLayout'
 import { Home } from './routes/home/Home'
 import { Register } from './routes/register/Register'
-import { Balance } from './routes/Balance'
+import { Balance } from './routes/balance/Balance'
 import { RequestPayment } from './routes/RequestPayment'
 import { SendPayment } from './routes/SendPayment'
 

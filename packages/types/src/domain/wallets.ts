@@ -32,6 +32,11 @@ export interface CreateWalletDto {
 	userId: string
 }
 
+export interface CheckUserDto {
+	document: string
+	cellphone: string
+}
+
 export interface ChargeWalletDto {
 	document: string
 	cellphone: string

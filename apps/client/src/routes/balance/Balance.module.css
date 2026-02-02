@@ -1,0 +1,139 @@
+@import "tailwindcss/theme" reference;
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.container {
+  @apply flex items-center justify-center p-4;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-lg p-4 border border-gray-200 transition-colors w-full md:p-8 md:max-w-2xl;
+}
+
+:global(.dark) .card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.backButton {
+  @apply flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-4 transition-colors md:text-base;
+}
+
+:global(.dark) .backButton {
+  @apply text-gray-400 hover:text-gray-200;
+}
+
+.backIcon {
+  @apply w-5 h-5;
+}
+
+.title {
+  @apply text-xl font-bold text-gray-900 mb-4 md:text-2xl md:mb-6;
+}
+
+:global(.dark) .title {
+  @apply text-white;
+}
+
+.errorMessage {
+  @apply bg-red-50 border border-red-200 text-red-800 p-3 rounded-lg text-sm mb-4 md:text-base md:p-4;
+}
+
+:global(.dark) .errorMessage {
+  @apply bg-red-900/20 border-red-800 text-red-300;
+}
+
+.successMessage {
+  @apply bg-green-50 border border-green-200 text-green-800 p-4 rounded-lg mb-6 md:p-6;
+}
+
+:global(.dark) .successMessage {
+  @apply bg-green-900/20 border-green-800 text-green-300;
+}
+
+.balanceResult {
+  @apply text-center;
+}
+
+.userName {
+  @apply text-lg font-semibold mb-2 md:text-xl;
+}
+
+.balanceLabel {
+  @apply text-sm text-gray-600 mb-2 md:text-base;
+}
+
+:global(.dark) .balanceLabel {
+  @apply text-gray-400;
+}
+
+.balanceAmount {
+  @apply text-4xl font-bold text-green-600 md:text-5xl;
+}
+
+:global(.dark) .balanceAmount {
+  @apply text-green-400;
+}
+
+.form {
+  @apply space-y-4 md:space-y-6;
+}
+
+.formGroup {
+  @apply space-y-1 md:space-y-2;
+}
+
+.label {
+  @apply block text-sm font-medium text-gray-700 md:text-base;
+}
+
+:global(.dark) .label {
+  @apply text-gray-300;
+}
+
+.input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm md:text-base md:px-4 md:py-3;
+}
+
+:global(.dark) .input {
+  @apply bg-gray-700 border-gray-600 text-white focus:ring-blue-400 disabled:bg-gray-800;
+}
+
+.phoneInputGroup {
+  @apply flex gap-2;
+}
+
+.countryCodeSelect {
+  @apply w-32 px-2 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm md:text-base md:px-3 md:py-3;
+}
+
+:global(.dark) .countryCodeSelect {
+  @apply bg-gray-700 border-gray-600 text-white focus:ring-blue-400 disabled:bg-gray-800;
+}
+
+.countryCodeSelect option {
+  @apply py-2;
+}
+
+.phoneInput {
+  @apply flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm md:text-base md:px-4 md:py-3;
+}
+
+:global(.dark) .phoneInput {
+  @apply bg-gray-700 border-gray-600 text-white focus:ring-blue-400 disabled:bg-gray-800;
+}
+
+.buttonGroup {
+  @apply flex flex-col gap-2 pt-2 md:pt-4;
+}
+
+.button {
+  @apply inline-flex items-center justify-center w-full px-4 py-3 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm md:text-base md:px-6 md:py-3;
+}
+
+.buttonPrimary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+}
+
+:global(.dark) .buttonPrimary {
+  @apply bg-blue-500 hover:bg-blue-600 focus:ring-blue-400;
+}
