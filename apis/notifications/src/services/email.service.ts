@@ -1,49 +1,45 @@
 import { ConfigService } from '@app/shared'
 import { ConfirmPaymentDto, User } from '@app/types'
 import { Injectable } from '@nestjs/common'
-import type { Transporter } from 'nodemailer'
-import * as nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 
 @Injectable()
 export class EmailService {
-	private transporter: Transporter
+	private resend: Resend
+	private fromEmail: string
+	private fromName: string
 
 	constructor(private readonly configService: ConfigService) {
-		const smtpHost =
-			this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com'
-		const smtpUser = this.configService.get<string>('SMTP_USER')
-		const smtpPassword = this.configService.get<string>('SMTP_PASSWORD')
+		const apiKey =
+			this.configService.get<string>('RESEND_API_KEY') ||
+			this.configService.get<string>('SMTP_PASSWORD')
 
-		console.log({ smtpUser })
+		this.fromEmail =
+			this.configService.get<string>('SMTP_USER') || 'onboarding@resend.dev'
+		this.fromName =
+			this.configService.get<string>('SMTP_FROM_NAME') || 'Wallet App'
 
-		this.transporter = nodemailer.createTransport({
-			host: smtpHost,
-			auth: {
-				user: smtpUser,
-				pass: smtpPassword,
-			},
-			connectionTimeout: 10000,
-			greetingTimeout: 10000,
-			socketTimeout: 10000,
-			logger: true,
-			debug: true,
-		})
+		this.resend = new Resend(apiKey)
 	}
 
 	async sendOtpEmail(
 		user: User,
 		transaction: ConfirmPaymentDto,
 	): Promise<void> {
-		const mailOptions = {
-			from: `"${this.configService.get<string>('SMTP_FROM_NAME') || 'Wallet App'}" <${this.configService.get<string>('SMTP_USER')}>`,
-			to: user.email,
-			subject: 'Código de verificación para tu pago',
-			html: this.getOtpEmailTemplate(user, transaction),
-		}
-
 		try {
-			await this.transporter.sendMail(mailOptions)
-			console.log(`✓ OTP email sent to ${user.email}`)
+			const { data, error } = await this.resend.emails.send({
+				from: `${this.fromName} <${this.fromEmail}>`,
+				to: user.email,
+				subject: 'Código de verificación para tu pago',
+				html: this.getOtpEmailTemplate(user, transaction),
+			})
+
+			if (error) {
+				console.error(`✗ Failed to send OTP email to ${user.email}:`, error)
+				throw error
+			}
+
+			console.log(`✓ OTP email sent to ${user.email} (ID: ${data?.id})`)
 		} catch (error) {
 			console.error(`✗ Failed to send OTP email to ${user.email}:`, error)
 			throw error

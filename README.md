@@ -276,7 +276,7 @@ pnpm wallets dev              # Desarrollo con hot-reload
 
 ### 4. **Notifications Microservice (Email)**
 - **Ubicación:** `apis/notifications/`
-- **Tecnología:** NestJS + Nodemailer + Google SMTP
+- **Tecnología:** NestJS + Resend
 - **Protocolo:** TCP (Microservicio NestJS)
 - **Puerto:** 5003 (TCP, no HTTP)
 - **Base de Datos:** No requiere (Solo envía emails)
@@ -287,38 +287,6 @@ pnpm wallets dev              # Desarrollo con hot-reload
 - ✅ Logs de envíos (en consola/logs)
 - ✅ Manejo de errores SMTP
 
-**Proveedor SMTP:**
-- **Proveedor:** Google (Gmail)
-- **Host:** smtp.gmail.com
-- **Puerto:** 587 (TLS)
-- **Autenticación:** Email + App Password (16 caracteres)
-
-**Configuración Google SMTP (Paso a Paso):**
-
-**Paso 1: Habilitar Verificación en Dos Pasos**
-```
-1. Ve a: https://myaccount.google.com/security
-2. Busca "Verificación en dos pasos"
-3. Haz clic en "Activada"
-4. Sigue el proceso (teléfono o security key)
-```
-
-**Paso 2: Generar App Password**
-```
-1. Ve a: https://myaccount.google.com/apppasswords
-2. Selecciona:
-   - App: "Correo"
-   - Dispositivo: "Windows Computer" (o tu SO)
-3. Google generará una contraseña de 16 caracteres
-4. COPIA LA CONTRASEÑA COMPLETA (incluye los espacios)
-```
-
-**Paso 3: Guardar en `.env.local`**
-```env
-# Archivo: /.env.local (raíz del proyecto)
-SMTP_USER=tu_email@gmail.com
-SMTP_PASSWORD=xxxx xxxx xxxx xxxx
-```
 
 **Troubleshooting Email:**
 ```
@@ -328,7 +296,6 @@ SMTP_PASSWORD=xxxx xxxx xxxx xxxx
 
 ❌ "Port 587 connection refused"
    → Revisar firewall/red
-   → Asegurar conectividad a smtp.gmail.com
 
 ❌ "Email not sent / timeout"
    → Revisar logs en terminal de notificaciones
