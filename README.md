@@ -1,6 +1,9 @@
-# 🏗️ Arquitectura de Microservicios - Billetera Digital - Prueba técnica
+# 🏗️ Billetera Digital - Prueba técnica
 
 **Autor:** [Christian Carrillo Zuñiga](https://www.linkedin.com/in/christiancazu/)
+
+
+## DEMO: [https://interfell-wallet.christiancazu.dev](https://interfell-wallet.christiancazu.dev)
 
 ## Descripción General
 
@@ -276,7 +279,7 @@ pnpm wallets dev              # Desarrollo con hot-reload
 
 ### 4. **Notifications Microservice (Email)**
 - **Ubicación:** `apis/notifications/`
-- **Tecnología:** NestJS + Resend
+- **Tecnología:** NestJS + Nodemailer
 - **Protocolo:** TCP (Microservicio NestJS)
 - **Puerto:** 5003 (TCP, no HTTP)
 - **Base de Datos:** No requiere (Solo envía emails)
@@ -286,6 +289,30 @@ pnpm wallets dev              # Desarrollo con hot-reload
 - ✅ Notificaciones de confirmación de pago
 - ✅ Logs de envíos (en consola/logs)
 - ✅ Manejo de errores SMTP
+
+**Configuración Inicial:**
+
+1. **Generar App Password de Google:**
+   - Ve a tu cuenta de Google: [https://myaccount.google.com/](https://myaccount.google.com/)
+   - Navega a **Seguridad** → **Verificación en dos pasos** (debe estar activado)
+   - Busca **Contraseñas de aplicaciones** ([acceso directo](https://myaccount.google.com/apppasswords))
+   - Selecciona **Correo** y **Otro (nombre personalizado)**, por ejemplo: "Wallet App"
+   - Copia la contraseña generada (16 caracteres sin espacios)
+
+2. **Configurar Variables de Entorno:**
+   
+   Crea o edita el archivo `.env.local` en la raíz del proyecto:
+   ```bash
+   # Configuración SMTP (Nodemailer)
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=tu-email@gmail.com
+   SMTP_FROM=tu-email@gmail.com
+   SMTP_PASSWORD=tu-app-password-de-16-caracteres
+   SMTP_FROM_NAME="Wallet App"
+   ```
+
+   **Nota:** Usa la contraseña de aplicación generada en el paso 1, NO tu contraseña normal de Gmail.
 
 
 **Troubleshooting Email:**

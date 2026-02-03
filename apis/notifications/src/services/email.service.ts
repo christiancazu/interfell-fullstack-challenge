@@ -1,25 +1,35 @@
 import { ConfigService } from '@app/shared'
 import { ConfirmPaymentDto, User } from '@app/types'
 import { Injectable } from '@nestjs/common'
-import { Resend } from 'resend'
+import type { Transporter } from 'nodemailer'
+import * as nodemailer from 'nodemailer'
 
 @Injectable()
 export class EmailService {
-	private resend: Resend
+	private transporter: Transporter
 	private fromEmail: string
 	private fromName: string
 
 	constructor(private readonly configService: ConfigService) {
-		const apiKey =
-			this.configService.get<string>('RESEND_API_KEY') ||
-			this.configService.get<string>('SMTP_PASSWORD')
-
+		const smtpHost =
+			this.configService.get<string>('SMTP_HOST') || 'smtp.gmail.com'
+		const smtpPort = this.configService.get<number>('SMTP_PORT') || 587
+		const smtpUser = this.configService.get<string>('SMTP_USER')
+		const smtpPassword = this.configService.get<string>('SMTP_PASSWORD')
 		this.fromEmail =
-			this.configService.get<string>('SMTP_USER') || 'onboarding@resend.dev'
+			this.configService.get<string>('SMTP_FROM') || 'dev@christiancazu.dev'
 		this.fromName =
 			this.configService.get<string>('SMTP_FROM_NAME') || 'Wallet App'
 
-		this.resend = new Resend(apiKey)
+		this.transporter = nodemailer.createTransport({
+			host: smtpHost,
+			port: smtpPort,
+			secure: smtpPort === 465,
+			auth: {
+				user: smtpUser,
+				pass: smtpPassword,
+			},
+		})
 	}
 
 	async sendOtpEmail(
@@ -27,19 +37,14 @@ export class EmailService {
 		transaction: ConfirmPaymentDto,
 	): Promise<void> {
 		try {
-			const { data, error } = await this.resend.emails.send({
+			const info = await this.transporter.sendMail({
 				from: `${this.fromName} <${this.fromEmail}>`,
 				to: user.email,
 				subject: 'Código de verificación para tu pago',
 				html: this.getOtpEmailTemplate(user, transaction),
 			})
 
-			if (error) {
-				console.error(`✗ Failed to send OTP email to ${user.email}:`, error)
-				throw error
-			}
-
-			console.log(`✓ OTP email sent to ${user.email} (ID: ${data?.id})`)
+			console.log(`✓ OTP email sent to ${user.email} (ID: ${info.messageId})`)
 		} catch (error) {
 			console.error(`✗ Failed to send OTP email to ${user.email}:`, error)
 			throw error
